@@ -1,5 +1,3 @@
-library("FlowSorted.Blood.EPIC")
-library("IlluminaHumanMethylationEPICmanifest")
 library(dplyr)
 library(ggplot2)
 library(ewastools)
@@ -158,16 +156,11 @@ RGset <- read.metharray.exp(targets = targets, verbose = T,
                             force = TRUE)
 
 # cell deconvolution using Salas et al. 2018 reference, also noob normalizing 
-wbc <- estimateCellCounts2(RGset, compositeCellType = "Blood",
-                           processMethod = "preprocessNoob",
-                           probeSelect = "IDOL",
-                           cellTypes = c("CD8T", "CD4T", "NK", "Bcell",
-                                         "Mono","Neu"),
-                           referencePlatform =
-                             "IlluminaHumanMethylationEPIC",
-                           referenceset = NULL,
-                           IDOLOptimizedCpGs =IDOLOptimizedCpGs,
-                           returnAll = TRUE)
+noob <- preprocessNoob(RGset, dyeCorr = TRUE, verbose = TRUE,
+               dyeMethod="single")
+beta <- getBeta(noob)
+##  all 450 IDOL probes in noob beta matrix 
+cells <- estimateLC(beta, ref = "Salas", constrained = T)
 
 
 
