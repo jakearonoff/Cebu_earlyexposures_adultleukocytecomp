@@ -159,7 +159,6 @@ RGset <- read.metharray.exp(targets = targets, verbose = T,
 noob <- preprocessNoob(RGset, dyeCorr = TRUE, verbose = TRUE,
                dyeMethod="single")
 beta <- getBeta(noob)
-##  all 450 IDOL probes in noob beta matrix 
 cells <- estimateLC(beta, ref = "Salas", constrained = T)
 
 
